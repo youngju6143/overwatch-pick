@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@config "../tailwind.config.js";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: dark;
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #0c0d10;
+  color: #e7e9ee;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --ow-orange: #f99e1a;
+  --ow-orange-soft: rgba(249, 158, 26, 0.12);
+  --ow-tank: #6aa7ff;
+  --ow-dps: #ef6262;
+  --ow-support: #4ec98a;
+
+  --background: #0c0d10;
+  --foreground: #e7e9ee;
+  --card: #14161b;
+  --card-foreground: #e7e9ee;
+  --popover: #14161b;
+  --popover-foreground: #e7e9ee;
+  --primary: #f99e1a;
+  --primary-foreground: #0c0d10;
+  --secondary: #1a1d23;
+  --secondary-foreground: #e7e9ee;
+  --muted: #1a1d23;
+  --muted-foreground: #b8bdc9;
+  --accent: #1a1d23;
+  --accent-foreground: #e7e9ee;
+  --destructive: #ef6262;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: rgba(249, 158, 26, 0.45);
+  --radius: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0c0d10;
+  background-image:
+    radial-gradient(
+      ellipse 60% 40% at 50% -10%,
+      rgba(249, 158, 26, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 90% 10%,
+      rgba(106, 167, 255, 0.06),
+      transparent 60%
+    );
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(249, 158, 26, 0.35);
+  color: #ffffff;
+}
+
+.role-tank {
+  color: var(--ow-tank);
+}
+.role-dps {
+  color: var(--ow-dps);
+}
+.role-support {
+  color: var(--ow-support);
+}
+.role-tank-bg {
+  background: rgba(106, 167, 255, 0.12);
+  border-color: rgba(106, 167, 255, 0.3);
+}
+.role-dps-bg {
+  background: rgba(239, 98, 98, 0.12);
+  border-color: rgba(239, 98, 98, 0.3);
+}
+.role-support-bg {
+  background: rgba(78, 201, 138, 0.12);
+  border-color: rgba(78, 201, 138, 0.3);
+}
+
+@theme inline {
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
