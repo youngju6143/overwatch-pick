@@ -23,7 +23,7 @@ export default function AppHeader({
           className="text-base md:text-lg font-bold text-white/90"
           style={monoStyle}
         >
-          오버워치 픽
+          뉴비들이 보면 좋을 오버워치 영웅 추천
         </h2>
       </div>
 
