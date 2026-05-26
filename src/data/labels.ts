@@ -15,7 +15,7 @@ export const COMP_DESCRIPTIONS: Record<CompType, string> = {
 };
 
 export const ROLE_LABELS: Record<HeroRole, string> = {
-  Tank: "탱커",
+  Tank: "돌격",
   Damage: "공격",
   Support: "지원",
 };
