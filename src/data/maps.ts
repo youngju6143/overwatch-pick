@@ -1,18 +1,7 @@
 import type { MapData } from "../types";
 
+// 가나다순 정렬 (한국어 기준)
 export const MAPS: MapData[] = [
-  {
-    name: "Gibraltar",
-    mapType: "Dive",
-    gameType: "Escort",
-    features: ["High ground", "Vertical movement", "Long rotation"],
-  },
-  {
-    name: "Dorado",
-    mapType: "Brawl",
-    gameType: "Escort",
-    features: ["Narrow streets", "Close range", "Choke points"],
-  },
   {
     name: "Route 66",
     mapType: "Poke",
@@ -20,94 +9,10 @@ export const MAPS: MapData[] = [
     features: ["Open lanes", "Long sightlines", "Wide spaces"],
   },
   {
-    name: "Havana",
+    name: "Antarctic Peninsula",
     mapType: "Poke",
-    gameType: "Escort",
-    features: ["Long sightlines", "Open courtyard", "Wide streets"],
-  },
-  {
-    name: "Circuit Royale",
-    mapType: "Poke",
-    gameType: "Escort",
-    features: ["Long sightlines", "Open lanes", "High ground"],
-  },
-  {
-    name: "Rialto",
-    mapType: "Poke",
-    gameType: "Escort",
-    features: ["Open lanes", "Canal sightlines"],
-  },
-  {
-    name: "King's Row",
-    mapType: "Brawl",
-    gameType: "Hybrid",
-    features: ["Narrow streets", "Choke points", "Close range"],
-  },
-  {
-    name: "Numbani",
-    mapType: "Dive",
-    gameType: "Hybrid",
-    features: ["High ground", "Open plaza", "Vertical space"],
-  },
-  {
-    name: "Eichenwalde",
-    mapType: "Brawl",
-    gameType: "Hybrid",
-    features: ["Tight corridors", "Chokepoints", "Castle siege"],
-  },
-  {
-    name: "Hollywood",
-    mapType: "Poke",
-    gameType: "Hybrid",
-    features: ["Mixed range", "Open sections", "Sightlines"],
-  },
-  {
-    name: "Blizzard World",
-    mapType: "Brawl",
-    gameType: "Hybrid",
-    features: ["Chokepoints", "Close quarters"],
-  },
-  {
-    name: "Paraíso",
-    mapType: "Dive",
-    gameType: "Hybrid",
-    features: ["Vertical space", "High ground", "Open areas"],
-  },
-  {
-    name: "New Queen Street",
-    mapType: "Brawl",
-    gameType: "Push",
-    features: ["Narrow streets", "Close combat"],
-  },
-  {
-    name: "Esperança",
-    mapType: "Dive",
-    gameType: "Push",
-    features: ["Vertical space", "High ground", "Rooftops"],
-  },
-  {
-    name: "Colosseo",
-    mapType: "Dive",
-    gameType: "Push",
-    features: ["Vertical levels", "Flanks", "Open center"],
-  },
-  {
-    name: "Runasapi",
-    mapType: "Brawl",
-    gameType: "Push",
-    features: ["Tight streets", "Close quarters"],
-  },
-  {
-    name: "Lijiang Tower",
-    mapType: "Dive",
     gameType: "Control",
-    features: ["Vertical", "High ground", "Flanks"],
-  },
-  {
-    name: "Ilios",
-    mapType: "Dive",
-    gameType: "Control",
-    features: ["Open areas", "Cliff edges", "Vertical"],
+    features: ["Open sight lines", "Wide spaces", "Long range"],
   },
   {
     name: "Nepal",
@@ -116,10 +21,46 @@ export const MAPS: MapData[] = [
     features: ["Narrow paths", "Close quarters"],
   },
   {
-    name: "Oasis",
+    name: "Numbani",
+    mapType: "Dive",
+    gameType: "Hybrid",
+    features: ["High ground", "Open plaza", "Vertical space"],
+  },
+  {
+    name: "New Queen Street",
+    mapType: "Brawl",
+    gameType: "Push",
+    features: ["Narrow streets", "Close combat"],
+  },
+  {
+    name: "Dorado",
+    mapType: "Brawl",
+    gameType: "Escort",
+    features: ["Narrow streets", "Close range", "Choke points"],
+  },
+  {
+    name: "Runasapi",
+    mapType: "Brawl",
+    gameType: "Push",
+    features: ["Tight streets", "Close quarters"],
+  },
+  {
+    name: "Rialto",
+    mapType: "Poke",
+    gameType: "Escort",
+    features: ["Open lanes", "Canal sightlines"],
+  },
+  {
+    name: "Lijiang Tower",
     mapType: "Dive",
     gameType: "Control",
-    features: ["Open", "Vertical", "Fast rotations"],
+    features: ["Vertical", "High ground", "Flanks"],
+  },
+  {
+    name: "Midtown",
+    mapType: "Brawl",
+    gameType: "Hybrid",
+    features: ["Narrow streets", "Choke points", "Mixed range"],
   },
   {
     name: "Busan",
@@ -128,10 +69,10 @@ export const MAPS: MapData[] = [
     features: ["Vertical", "Mixed terrain"],
   },
   {
-    name: "Antarctic Peninsula",
-    mapType: "Poke",
-    gameType: "Control",
-    features: ["Open sight lines", "Wide spaces", "Long range"],
+    name: "Blizzard World",
+    mapType: "Brawl",
+    gameType: "Hybrid",
+    features: ["Chokepoints", "Close quarters"],
   },
   {
     name: "Samoa",
@@ -144,6 +85,72 @@ export const MAPS: MapData[] = [
     mapType: "Brawl",
     gameType: "Escort",
     features: ["Narrow paths", "Close quarters"],
+  },
+  {
+    name: "Circuit Royale",
+    mapType: "Poke",
+    gameType: "Escort",
+    features: ["Long sightlines", "Open lanes", "High ground"],
+  },
+  {
+    name: "Eichenwalde",
+    mapType: "Brawl",
+    gameType: "Hybrid",
+    features: ["Tight corridors", "Chokepoints", "Castle siege"],
+  },
+  {
+    name: "Oasis",
+    mapType: "Dive",
+    gameType: "Control",
+    features: ["Open", "Vertical", "Fast rotations"],
+  },
+  {
+    name: "King's Row",
+    mapType: "Brawl",
+    gameType: "Hybrid",
+    features: ["Narrow streets", "Choke points", "Close range"],
+  },
+  {
+    name: "Esperança",
+    mapType: "Dive",
+    gameType: "Push",
+    features: ["Vertical space", "High ground", "Rooftops"],
+  },
+  {
+    name: "Ilios",
+    mapType: "Dive",
+    gameType: "Control",
+    features: ["Open areas", "Cliff edges", "Vertical"],
+  },
+  {
+    name: "Gibraltar",
+    mapType: "Dive",
+    gameType: "Escort",
+    features: ["High ground", "Vertical movement", "Long rotation"],
+  },
+  {
+    name: "Colosseo",
+    mapType: "Dive",
+    gameType: "Push",
+    features: ["Vertical levels", "Flanks", "Open center"],
+  },
+  {
+    name: "Paraíso",
+    mapType: "Dive",
+    gameType: "Hybrid",
+    features: ["Vertical space", "High ground", "Open areas"],
+  },
+  {
+    name: "Havana",
+    mapType: "Poke",
+    gameType: "Escort",
+    features: ["Long sightlines", "Open courtyard", "Wide streets"],
+  },
+  {
+    name: "Hollywood",
+    mapType: "Poke",
+    gameType: "Hybrid",
+    features: ["Mixed range", "Open sections", "Sightlines"],
   },
 ];
 
@@ -159,6 +166,7 @@ export const MAP_KO: Record<string, string> = {
   Eichenwalde: "아이헨발데",
   Hollywood: "할리우드",
   "Blizzard World": "블리자드 월드",
+  Midtown: "미드타운",
   Paraíso: "파라이수",
   "New Queen Street": "뉴 퀸 스트리트",
   Esperança: "이스페란사",
