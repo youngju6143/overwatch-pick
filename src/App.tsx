@@ -11,6 +11,14 @@ import type {
 import { MAPS, MAP_KO, GAMETYPE_KO, FEATURE_KO } from "./data/maps";
 import { HEROES, HERO_KO, HERO_IMG } from "./data/heroes";
 import { COMP_KO, COMP_DESCRIPTIONS, ROLE_LABELS } from "./data/labels";
+import {
+  dpsClassOf,
+  supportClassOf,
+  tankSubtypeOf,
+  dpsTagsOf,
+  supportTagsOf,
+  SUPPORT_PAIRS,
+} from "./data/archetypes";
 
 const ko = (name: string) => HERO_KO[name] ?? name;
 const koList = (names: string[]) => names.map(ko).join(", ");
@@ -80,6 +88,193 @@ function computeRecommendations(
     if (counteredEnemies.length > 0) {
       score += counteredEnemies.length * 2;
       reasons.push(`${koList(counteredEnemies)} 카운터`);
+    }
+
+    // ── 나무위키 조합 이론 기반 가중 ──────────────────────────────────────
+    const teamTank = team.find((n) => tankSubtypeOf(n));
+    const tankSub = teamTank ? tankSubtypeOf(teamTank) : null;
+    const teamDps = team.filter((n) => dpsClassOf(n));
+    const teamSupports = team.filter((n) => supportClassOf(n));
+    const enemyTags = new Set(enemies.flatMap((n) => dpsTagsOf(n)));
+    const enemyHasDiveTank = enemies.some(
+      (n) => tankSubtypeOf(n) === "dive",
+    );
+    const enemyHasAnchor = enemies.some(
+      (n) => tankSubtypeOf(n) === "anchor" || tankSubtypeOf(n) === "bruiser",
+    );
+
+    // 1) 탱커 서브타입 ↔ 페어 영웅 가중
+    if (tankSub && hero.role !== "Tank") {
+      const tags = dpsTagsOf(hero.name);
+      const sTags = supportTagsOf(hero.name);
+      if (tankSub === "anchor") {
+        if (hero.role === "Damage" && tags.includes("midRange")) {
+          score += 2;
+          reasons.push(`${ko(teamTank!)} 진형 유지에 맞는 중·장거리 지속딜`);
+        }
+        if (hero.role === "Support" && sTags.includes("sustain")) {
+          score += 2;
+          reasons.push(`${ko(teamTank!)} 진영 유지 라인에 적합한 지속 힐`);
+        }
+      } else if (tankSub === "bruiser") {
+        if (
+          hero.role === "Damage" &&
+          (tags.includes("antiTank") || tags.includes("assassin"))
+        ) {
+          score += 2;
+          reasons.push(`${ko(teamTank!)} 브루저 난전에 어울리는 픽`);
+        }
+        if (hero.role === "Support" && sTags.includes("save")) {
+          score += 2;
+          reasons.push(`브루저 ${ko(teamTank!)} 세이브에 강한 힐러`);
+        }
+      } else if (tankSub === "dive") {
+        if (
+          hero.role === "Damage" &&
+          (tags.includes("assassin") || tags.includes("aggro"))
+        ) {
+          score += 3;
+          reasons.push(`${ko(teamTank!)} 다이브와 강한 시너지`);
+        }
+        if (hero.role === "Support") {
+          if (hero.name === "Lúcio") {
+            score += 2;
+            reasons.push("다이브 기동성 보강");
+          }
+          if (
+            hero.name === "Ana" &&
+            teamTank !== "Wrecking Ball"
+          ) {
+            score += 2;
+            reasons.push("나노/수면으로 다이브 결정력 강화");
+          }
+          if (sTags.includes("save") || sTags.includes("poke")) {
+            score += 1;
+            reasons.push("다이브 라인을 받쳐주는 원거리 지원");
+          }
+        }
+      }
+    }
+
+    // 2) 메인/서브 딜러 페어 이론
+    if (hero.role === "Damage" && teamDps.length > 0) {
+      const heroClass = dpsClassOf(hero.name);
+      const teamClasses = teamDps
+        .map((n) => dpsClassOf(n))
+        .filter(Boolean);
+      if (heroClass && teamClasses.length > 0) {
+        const hasMain = teamClasses.includes("main");
+        const hasFlex = teamClasses.includes("flex");
+        if (heroClass === "main" && hasFlex && !hasMain) {
+          score += 2;
+          reasons.push("서브 딜러와 메인·서브 페어 형성");
+        } else if (heroClass === "flex" && hasMain && !hasFlex) {
+          score += 2;
+          reasons.push("메인 딜러와 메인·서브 페어 형성");
+        } else if (heroClass === "main" && hasMain) {
+          score -= 2;
+          reasons.push("메인+메인 페어는 결정력 부족(감점)");
+        }
+      }
+    }
+
+    // 3) 메인/서브 힐러 페어 이론
+    if (hero.role === "Support" && teamSupports.length > 0) {
+      const heroClass = supportClassOf(hero.name);
+      const teamClasses = teamSupports
+        .map((n) => supportClassOf(n))
+        .filter(Boolean);
+      if (heroClass && teamClasses.length > 0) {
+        const hasMain = teamClasses.includes("main");
+        const hasFlex = teamClasses.includes("flex");
+        if (heroClass === "main" && hasFlex && !hasMain) {
+          score += 2;
+          reasons.push("서브 힐러와 메인·서브 페어 형성");
+        } else if (heroClass === "flex" && hasMain && !hasFlex) {
+          score += 2;
+          reasons.push("메인 힐러와 메인·서브 페어 형성");
+        } else if (heroClass === "main" && hasMain) {
+          score -= 2;
+          reasons.push("메인+메인 힐러는 변수 부족(감점)");
+        }
+      }
+    }
+
+    // 4) 공중 지원(파라/에코/프레야) 트리거 시 히트스캔 / 아나·메르시·브리기테
+    const teamHasAerial = team.some((n) =>
+      dpsTagsOf(n).includes("aerial"),
+    );
+    if (
+      teamHasAerial &&
+      hero.role === "Support" &&
+      ["Ana", "Mercy", "Brigitte"].includes(hero.name)
+    ) {
+      score += 2;
+      reasons.push("공중 딜러를 받쳐줄 지원가");
+    }
+
+    // 5) 저격수 ↔ 안티탱커/메인 딜러 페어
+    const teamHasSniper = team.some((n) => dpsTagsOf(n).includes("sniper"));
+    if (
+      teamHasSniper &&
+      hero.role === "Damage" &&
+      (dpsTagsOf(hero.name).includes("antiTank") ||
+        dpsClassOf(hero.name) === "main")
+    ) {
+      score += 1;
+      reasons.push("저격수를 보완하는 안정적 화력");
+    }
+
+    // 6) 상대 조합 카운터 가중
+    if (enemyTags.has("aerial") && hero.role === "Damage") {
+      if (
+        ["Soldier:76", "Ashe", "Cassidy", "Sojourn"].includes(hero.name)
+      ) {
+        score += 2;
+        reasons.push("상대 공중 영웅 히트스캔 카운터");
+      }
+    }
+    if (
+      enemyHasDiveTank &&
+      hero.role === "Support" &&
+      supportTagsOf(hero.name).includes("antiDive")
+    ) {
+      score += 2;
+      reasons.push("상대 다이브 견제용 안티다이브 지원가");
+    }
+    if (
+      enemyHasAnchor &&
+      hero.role === "Damage" &&
+      dpsTagsOf(hero.name).includes("antiTank")
+    ) {
+      score += 1;
+      reasons.push("상대 큰 히트박스 탱커 압박");
+    }
+
+    // 7) 검증된 힐러 페어 (나무위키) 매칭 가중
+    for (const pair of SUPPORT_PAIRS) {
+      const [a, b] = pair.supports;
+      const hasA = team.includes(a);
+      const hasB = team.includes(b);
+
+      if (hasA && hasB) {
+        // 페어 완성 → 추천 탱커/딜러 가중
+        if (hero.role === "Tank" && pair.tanks.includes(hero.name)) {
+          score += 3;
+          reasons.push(`${pair.label} 페어가 선호하는 탱커`);
+        }
+        if (hero.role === "Damage" && pair.dps.includes(hero.name)) {
+          score += 3;
+          reasons.push(`${pair.label} 페어가 선호하는 딜러`);
+        }
+      } else if (
+        hero.role === "Support" &&
+        ((hasA && hero.name === b) || (hasB && hero.name === a))
+      ) {
+        // 페어의 다른 한쪽이 이미 팀에 있을 때 — 짝꿍 추천
+        score += 3;
+        reasons.push(`${pair.label} 조합 완성 (${pair.note})`);
+      }
     }
 
     const sThreshold = map ? 8 : 4;
