@@ -152,6 +152,30 @@ export const MAPS: MapData[] = [
     gameType: "Hybrid",
     features: ["Mixed range", "Open sections", "Sightlines"],
   },
+  {
+    name: "Junkertown",
+    mapType: "Poke",
+    gameType: "Escort",
+    features: ["Long sightlines", "Open lanes", "High ground"],
+  },
+  {
+    name: "New Junk City",
+    mapType: "Dive",
+    gameType: "Flashpoint",
+    features: ["Vertical space", "Open areas", "Long rotation"],
+  },
+  {
+    name: "Suravasa",
+    mapType: "Dive",
+    gameType: "Flashpoint",
+    features: ["Vertical", "High ground", "Open areas"],
+  },
+  {
+    name: "Aatlis",
+    mapType: "Poke",
+    gameType: "Flashpoint",
+    features: ["Long sightlines", "Open lanes", "Mixed range"],
+  },
 ];
 
 export const MAP_KO: Record<string, string> = {
@@ -180,6 +204,10 @@ export const MAP_KO: Record<string, string> = {
   "Antarctic Peninsula": "남극 반도",
   Samoa: "사모아",
   "Shambali Monastery": "샴발리 수도원",
+  Junkertown: "쓰레기촌",
+  "New Junk City": "뉴 정크 시티",
+  Suravasa: "수라바사",
+  Aatlis: "아틀리스",
 };
 
 export const GAMETYPE_KO: Record<string, string> = {
@@ -187,6 +215,7 @@ export const GAMETYPE_KO: Record<string, string> = {
   Hybrid: "혼합",
   Push: "밀기",
   Control: "쟁탈",
+  Flashpoint: "플래시포인트",
 };
 
 export const FEATURE_KO: Record<string, string> = {

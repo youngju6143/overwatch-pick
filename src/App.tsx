@@ -33,7 +33,6 @@ function computeRecommendations(
 ): Recommendation[] {
   const candidates = HEROES.filter((h) => {
     if (team.includes(h.name)) return false;
-    if (enemies.includes(h.name)) return false;
     if (role && h.role !== role) return false;
     return true;
   });
@@ -1245,7 +1244,7 @@ export default function App() {
             )}
             {team.length < 5 && (
               <HeroAutocomplete
-                exclude={[...team, ...enemies]}
+                exclude={team}
                 onSelect={addToTeam}
                 placeholder="우리 팀 영웅 입력"
               />
@@ -1276,7 +1275,7 @@ export default function App() {
             )}
             {enemies.length < 5 && (
               <HeroAutocomplete
-                exclude={[...team, ...enemies]}
+                exclude={enemies}
                 onSelect={addToEnemies}
                 placeholder="상대 팀 영웅 입력"
               />
